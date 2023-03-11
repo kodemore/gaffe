@@ -1,2 +1,2 @@
-# gaffe
-Easier structured exceptions for python.
+# Gaffe
+Simple structured exceptions for python.

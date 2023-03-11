@@ -1,0 +1,62 @@
+[tool.poetry]
+name = "gaffe"
+version = "0.0.1"
+description = "Simple structured exceptions for python."
+authors = [
+    "Dawid Kraczkowski <dawid.kraczkowski@gmail.com>"
+]
+license = "MIT"
+readme = "README.md"
+
+keywords = ["error", "exception", "structured", "simple", "gaffe"]
+
+homepage = "https://github.com/kodemore/gaffe"
+repository = "https://github.com/kodemore/gaffe"
+documentation = "https://github.com/kodemore/gaffe"
+
+classifiers = [
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+# Requirements
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+isort = "^5.7.0"
+pytest = "^6.2.5"
+pytest-cov = "^2.5"
+black = "^22.3.0"
+mypy = "^0.961"
+
+[tool.mypy]
+plugins = "gaffe.mypy:plugin"
+
+[tool.black]
+exclude = ".venv"
+line-length = 120
+target-version = ["py38"]
+
+[tool.bandit]
+skips = ["B106", "B101", "B110"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "pass",
+    "if __name__ == .__main__.:",
+    "nocov",
+    "if TYPE_CHECKING:",
+]
+fail_under = 80
+show_missing = true
+
+[tool.coverage.run]
+branch = true
+omit = [
+    "tests/*"
+]
