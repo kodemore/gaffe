@@ -99,6 +99,15 @@ except NotFoundError as e:
     print(e)
 ```
 
+# Integration with mypy
+
+To fix mypy complains about the code you can use `gaffe.mypy:plugin` in your config file, like below:
+
+```toml
+[tool.mypy]
+plugins = "gaffe.mypy:plugin"
+```
+
 That's all folks!
 
 For more examples please [check the test scenarios](./tests/test_error.py).
