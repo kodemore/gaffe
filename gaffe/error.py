@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from inspect import isclass
-from typing import Any, Dict, List, Type, TypedDict, Union, overload
+from typing import Dict, List, Type, TypedDict, Union, overload
 
 
 class _ErrorMeta(TypedDict):
@@ -19,16 +19,35 @@ class ErrorMeta(type):
         for err_name, err_value in body.items():
             if err_name.startswith("__"):
                 continue
+            if err_value is Ellipsis:
+                err_value = err_name
             errors[err_name] = _ErrorMeta(value=err_value, sub_types=[])
 
         if "__annotations__" in body:
             for err_name, err_type in body["__annotations__"].items():
                 if hasattr(err_type, "__origin__") and err_type.__origin__ == Union:
-                    errors[err_name]["sub_types"] = list(err_type.__args__)
-                elif isclass(err_type) and issubclass(err_type, Exception):
-                    errors[err_name]["sub_types"] = [err_type]
+                    sub_types = list(err_type.__args__)
+                elif isclass(err_type) and issubclass(err_type, Exception) or err_type is Ellipsis:
+                    sub_types = [err_type]
                 else:
-                    raise ValueError(f"Invalid subtype `{err_type}` provided " f"for `{err_name}` in `{what}` class.")
+                    raise ValueError(
+                        f"Invalid subtype `{err_type}` provided " 
+                        f"for `{err_name}` in `{what}` class."
+                    )
+                if Exception in sub_types:
+                    sub_types.remove(Exception)
+                if Ellipsis in sub_types:
+                    sub_types.remove(Ellipsis)
+                if Error in sub_types:
+                    sub_types.remove(Error)
+
+                if err_name not in errors:
+                    errors[err_name] = _ErrorMeta(
+                        value=err_name,
+                        sub_types=sub_types
+                    )
+                else:
+                    errors[err_name]["sub_types"] = sub_types
 
         for base in bases:
             if not issubclass(base, Error):
@@ -52,7 +71,9 @@ class ErrorMeta(type):
             child_dct = {
                 "__module__": body["__module__"],
                 "__qualname__": qual_name,
-                "__value__": a_value["value"],
+                "full_name": qual_name,
+                "name": a_name,
+                "value": a_value["value"],
             }
             extra_bases = [getattr(base, a_name) for base in bases if hasattr(base, a_name)]
             all_bases = [cls] + a_value["sub_types"] + extra_bases
@@ -61,6 +82,10 @@ class ErrorMeta(type):
 
 
 class Error(Exception, metaclass=ErrorMeta):
+    value: str
+    name: str
+    full_name: str
+
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
@@ -82,6 +107,6 @@ class Error(Exception, metaclass=ErrorMeta):
             and object.__class__.__module__ == self.__class__.__module__
         )
 
+    def __str__(self) -> str:
+        return self.value
 
-def error(value: Any) -> Type[Exception]:
-    return value

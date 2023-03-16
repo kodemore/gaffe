@@ -1,1 +1,1 @@
-from .error import Error, error
+from .error import Error
