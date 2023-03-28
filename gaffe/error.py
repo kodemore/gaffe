@@ -76,8 +76,8 @@ class ErrorMeta(type):
                 "value": a_value["value"],
             }
             extra_bases = [getattr(base, a_name) for base in bases if hasattr(base, a_name)]
-            all_bases = [cls] + a_value["sub_types"] + extra_bases
-            child_error_class = super().__new__(cls.__class__, qual_name, tuple(all_bases), child_dct)
+            all_bases = [cls] + extra_bases + a_value["sub_types"]
+            child_error_class = type.__new__(cls.__class__, qual_name, tuple(all_bases), child_dct)
             setattr(cls, a_name, child_error_class)
 
 

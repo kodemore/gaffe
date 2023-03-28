@@ -161,3 +161,26 @@ def test_can_raise_error_with_args() -> None:
         assert str(e) == "test_error"
         assert e.args[0] == "a"
         assert e.args[1] == "b"
+
+
+def test_can_extend_same_class_multiple_times() -> None:
+    # given
+    class MyError(Error):
+        shared_error: TypeError
+
+    class MyErrorA(MyError):
+        ...
+
+    class MyErrorB(MyErrorA):
+        ...
+
+    # when
+    error = MyErrorB.shared_error()
+
+    # then
+    assert isinstance(error, MyError)
+    assert isinstance(error, MyError.shared_error)
+    assert isinstance(error, MyErrorA)
+    assert isinstance(error, MyErrorA.shared_error)
+    assert isinstance(error, MyErrorB)
+    assert isinstance(error, MyErrorB.shared_error)
