@@ -31,12 +31,12 @@ def test_raise_exception_as_class() -> None:
 def test_get_name_value_and_full_name() -> None:
     # given
     class MyError(Error):
-        error_one: ...
-        error_two: ...
+        error_one: ...  # type: ignore
+        error_two: ...  # type: ignore
         custom_error = "custom_value"
 
     class MyChildError(MyError):
-        error_three: ...
+        error_three: ...  # type: ignore
         custom_error = "child_custom_value"
 
     # when
@@ -68,7 +68,7 @@ def test_get_name_value_and_full_name() -> None:
 
     # when
     try:
-        raise MyChildError.custom_error
+        raise MyChildError.custom_error  # type: ignore
     # then
     except MyError as e:
         assert e.name == "custom_error"
@@ -106,7 +106,7 @@ def test_can_use_shared_error() -> None:
         pass
 
     class MyError(Error):
-        child_error: ...
+        child_error: ...  # type: ignore
         test_error: TestError
 
     class OtherError(Error):

@@ -4,9 +4,9 @@ from typing import TypeVar, Callable, Type, Any
 T = TypeVar("T")
 
 
-def raises(*allowed_errors: Type[Exception]) -> Callable[[T], T]:
+def raises(*allowed_errors: Type[Exception]) -> Callable:
 
-    def _decorate(what: T) -> T:
+    def _decorate(what: Callable) -> Callable:
 
         @wraps(what)
         def _execute_what(*args, **kwargs) -> Any:

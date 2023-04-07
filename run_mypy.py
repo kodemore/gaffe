@@ -1,3 +1,2 @@
 from mypy import api
-
-print(api.run(["test.py"]))
+print(api.run(["mypy_test/test.py"]))

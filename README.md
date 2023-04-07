@@ -57,7 +57,7 @@ The raises decorator ensures that my_function can only raise TypeError and Value
 
 ## 🤖 Mypy Integration
 
-To keep mypy happy, use the gaffe.mypy:plugin in your config file:
+To keep mypy happy, use the gaffe.mypy:plugin in your config file, and ensure that error properties are annotated with `Exception` type instead of `...`
 
 ```toml
 [tool.mypy]
