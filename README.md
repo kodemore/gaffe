@@ -1,31 +1,33 @@
-# Gaffe
-Simple structured exceptions for python. 
+Introducing Gaffe: Streamlined Exception Handling for Python
 
-Gaffe relies on metaclass-based approach to be highly extensible and pluggable into any existing project, promoting better error handling and improved code readability.
+Are you tired of managing messy, unstructured exceptions in your Python projects? Gaffe is here to save the day! This elegant library offers a metaclass-based approach for highly extensible and easy-to-integrate custom exceptions, leading to better error handling and improved code readability.
 
+🔥 Key Features
 
-# Features
+🎯 Simple, concise syntax for defining custom errors with optional subtypes
+🧩 Clean integration through metaclass-based approach
+🌳 Supports inheritance and composition of custom errors
+🏗️ Automatic generation of error classes with custom attributes
+🧮 Easy error comparison with the __eq__ method, supporting both class and instance comparisons
+🕵️‍♂️ raises decorator to inspect and validate exceptions raised by functions or methods
+🚀 Quick Installation
 
-- Simple and concise syntax for defining custom errors with optional subtypes
-- Clean integration through metaclass-based approach
-- Supports inheritance and composition of custom errors
-- Automatic generation of error classes with custom attributes
-- Easy comparison of errors using the __eq__ method, supporting both class and instance comparisons.
+For pip enthusiasts:
 
-# Installation
+bash
+Copy code
+pip install gaffe
+For poetry aficionados:
 
-With pip:
-`pip install gaffe`
+bash
+Copy code
+poetry add gaffe
+💡 Getting Started
 
-or poetry:
+To employ Gaffe's custom error system, import the Error class and create custom errors by inheriting from it:
 
-`poetry add gaffe`
-
-# Usage
-
-To use this custom error system, simply import the Error class and define your custom errors by inheriting from it:
-
-```python
+python
+Copy code
 from gaffe import Error
 
 class NotFoundError(Exception):
@@ -35,79 +37,32 @@ class MyError(Error):
     not_found: NotFoundError
     invalid_input: ...
     authentication_error = "authentication_error"
-```
+With this example, you'll get three custom errors under the MyError class, ready to be used just like any other Python exceptions.
 
-This creates three custom errors under the MyError class:
-- `MyError.not_found` which extends also `NotFoundError`
-- `MyError.invalid_input` the simplest definition of an error without additional subtype
-- `MyError.authentication_error` an error with a custom value assigned to it
+🎩 Raises Decorator
 
-These custom errors can be used just like any other Python exceptions:
+Harness the power of the raises decorator to define and validate the types of exceptions a function or method can raise:
 
 ```python
-from gaffe import Error
+from gaffe import raises
 
-class NotFoundError(Exception):
-    ...
-
-class NetworkError(Error):
-    timeout = "Request timed out"
-    connection_error: ...
-
-class HTTPError(NetworkError):
-    bad_request: ...
-    not_found: NotFoundError
+@raises(TypeError, ValueError)
+def my_function(x: int, y: int) -> float:
+    if x <= 0 or y <= 0:
+        raise ValueError("x and y must be positive")
+    return x / y
 ```
 
-This creates a hierarchy of custom errors with NetworkError as the base class and HTTPError as a subclass with additional HTTP-specific errors.
+The raises decorator ensures that my_function can only raise TypeError and ValueError. If it tries to raise an unlisted exception, an AssertionError will be raised with a suitable error message.
 
-You can handle `HTTPError.timeout` as follows:
+## 🤖 Mypy Integration
 
-```python
-try:
-    raise HTTPError.timeout
-except NetworkError as e:
-    print(e)
-
-try:
-    raise HTTPError.timeout
-except HTTPError as e:
-    print(e)
-
-try:
-    raise HTTPError.timeout
-except HTTPError.timeout as e:
-    print(e)
-```
-
-You can handle `HTTPError.not_found` as follows:
-
-```python
-try:
-    raise HTTPError.not_found
-except HTTPError as e:
-    print(e)
-
-try:
-    raise HTTPError.not_found
-except HTTPError as e:
-    print(e)
-
-try:
-    raise HTTPError.not_found
-except NotFoundError as e:
-    print(e)
-```
-
-# Integration with mypy
-
-To fix mypy complains about the code you can use `gaffe.mypy:plugin` in your config file, like below:
+To keep mypy happy, use the gaffe.mypy:plugin in your config file:
 
 ```toml
 [tool.mypy]
 plugins = "gaffe.mypy:plugin"
 ```
 
-That's all folks!
 
-For more examples please [check the test scenarios](./tests/test_error.py).
+Ready to revolutionize your Python exception handling? Get started with Gaffe today and check out the test scenarios for more examples!

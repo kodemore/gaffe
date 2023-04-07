@@ -1,6 +1,6 @@
 import pytest
 
-from gaffe import Error
+from gaffe import Error, raises
 
 
 def test_can_define_error_class() -> None:
@@ -184,3 +184,19 @@ def test_can_extend_same_class_multiple_times() -> None:
     assert isinstance(error, MyErrorA.shared_error)
     assert isinstance(error, MyErrorB)
     assert isinstance(error, MyErrorB.shared_error)
+
+
+def test_can_wrap_method() -> None:
+    # given
+    class MyClass:
+
+        @raises(Error)
+        def generate_issue(self, message: str) -> None:
+            raise Error(message)
+
+    # when
+    instance = MyClass()
+
+    # then
+    with pytest.raises(Error):
+        instance.generate_issue("Message")
