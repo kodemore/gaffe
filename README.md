@@ -4,13 +4,13 @@ Are you tired of managing messy, unstructured exceptions in your Python projects
 
 ## 🔥 Key Features
 
-🎯 Simple, concise syntax for defining custom errors with optional subtypes
-🧩 Clean integration through metaclass-based approach
-🌳 Supports inheritance and composition of custom errors
-🏗️ Automatic generation of error classes with custom attributes
-🧮 Easy error comparison with the __eq__ method, supporting both class and instance comparisons
-🕵️‍♂️ raises decorator to inspect and validate exceptions raised by functions or methods
-🚀 Quick Installation
+- 🎯 Simple, concise syntax for defining custom errors with optional subtypes
+- 🧩 Clean integration through metaclass-based approach
+- 🌳 Supports inheritance and composition of custom errors
+- 🏗️ Automatic generation of error classes with custom attributes
+- 🧮 Easy error comparison with the __eq__ method, supporting both class and instance comparisons
+- 🕵️‍♂️ raises decorator to inspect and validate exceptions raised by functions or methods
+- 🚀 Quick Installation
 
 For pip enthusiasts:
 
