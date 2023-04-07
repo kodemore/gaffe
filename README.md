@@ -1,8 +1,8 @@
-Introducing Gaffe: Streamlined Exception Handling for Python
+# Introducing Gaffe: Streamlined Exception Handling for Python
 
 Are you tired of managing messy, unstructured exceptions in your Python projects? Gaffe is here to save the day! This elegant library offers a metaclass-based approach for highly extensible and easy-to-integrate custom exceptions, leading to better error handling and improved code readability.
 
-🔥 Key Features
+## 🔥 Key Features
 
 🎯 Simple, concise syntax for defining custom errors with optional subtypes
 🧩 Clean integration through metaclass-based approach
@@ -14,20 +14,21 @@ Are you tired of managing messy, unstructured exceptions in your Python projects
 
 For pip enthusiasts:
 
-bash
-Copy code
+```bash
 pip install gaffe
+```
+
 For poetry aficionados:
 
-bash
-Copy code
+```bash
 poetry add gaffe
-💡 Getting Started
+```
+
+# 💡 Getting Started
 
 To employ Gaffe's custom error system, import the Error class and create custom errors by inheriting from it:
 
-python
-Copy code
+```python
 from gaffe import Error
 
 class NotFoundError(Exception):
@@ -37,9 +38,11 @@ class MyError(Error):
     not_found: NotFoundError
     invalid_input: ...
     authentication_error = "authentication_error"
+```
+    
 With this example, you'll get three custom errors under the MyError class, ready to be used just like any other Python exceptions.
 
-🎩 Raises Decorator
+## 🎩 Raises Decorator
 
 Harness the power of the raises decorator to define and validate the types of exceptions a function or method can raise:
 
