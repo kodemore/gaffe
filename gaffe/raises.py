@@ -1,10 +1,10 @@
 from functools import wraps
-from typing import TypeVar, Callable, Type, Any
+from typing import TypeVar, Callable, Type, Any, Union
 
 T = TypeVar("T")
 
 
-def raises(*allowed_errors: Type[Exception]) -> Callable:
+def raises(*allowed_errors: Union[Type[Exception], Exception]) -> Callable:
 
     def _decorate(what: Callable) -> Callable:
 

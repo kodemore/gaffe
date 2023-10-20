@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gaffe"
-version = "0.2.0"
+version = "0.2.1"
 description = "Simple structured exceptions for python."
 authors = [
     "Dawid Kraczkowski <dawid.kraczkowski@gmail.com>"
