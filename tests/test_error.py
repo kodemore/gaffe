@@ -143,7 +143,7 @@ def test_can_raise_error_with_kwargs() -> None:
     try:
         raise MyError.test_error(param_a="a", param_b="b")
     except MyError.test_error as e:
-        assert str(e) == "test_error"
+        assert str(e) == "param_a=a,param_b=b"
         assert e.kwargs.get("param_a") == "a"
         assert e.kwargs.get("param_b") == "b"
 
@@ -189,7 +189,6 @@ def test_can_extend_same_class_multiple_times() -> None:
 def test_can_wrap_method() -> None:
     # given
     class MyClass:
-
         @raises(Error)
         def generate_issue(self, message: str) -> None:
             raise Error(message)

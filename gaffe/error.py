@@ -30,10 +30,7 @@ class ErrorMeta(type):
                 elif isclass(err_type) and issubclass(err_type, Exception) or err_type is Ellipsis:
                     sub_types = [err_type]
                 else:
-                    raise ValueError(
-                        f"Invalid subtype `{err_type}` provided " 
-                        f"for `{err_name}` in `{what}` class."
-                    )
+                    raise ValueError(f"Invalid subtype `{err_type}` provided " f"for `{err_name}` in `{what}` class.")
                 if Exception in sub_types:
                     sub_types.remove(Exception)
                 if Ellipsis in sub_types:
@@ -42,10 +39,7 @@ class ErrorMeta(type):
                     sub_types.remove(Error)
 
                 if err_name not in errors:
-                    errors[err_name] = _ErrorMeta(
-                        value=err_name,
-                        sub_types=sub_types
-                    )
+                    errors[err_name] = _ErrorMeta(value=err_name, sub_types=sub_types)
                 else:
                     errors[err_name]["sub_types"] = sub_types
 
@@ -108,5 +102,10 @@ class Error(Exception, metaclass=ErrorMeta):
         )
 
     def __str__(self) -> str:
-        return self.value
+        if "message" in self.kwargs:
+            return self.kwargs["message"]
 
+        if self.kwargs:
+            return ",".join([f"{key}={value}" for key, value in self.kwargs.items()])
+
+        return self.value

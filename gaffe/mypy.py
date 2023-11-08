@@ -1,15 +1,15 @@
 from typing import Any
 
-from mypy.nodes import SymbolTableNode, ClassDef, AssignmentStmt
-from mypy.plugin import AttributeContext, Plugin, TypeInfo, ClassDefContext, SemanticAnalyzerPluginInterface
-from mypy.types import AnyType, TypeOfAny, Type
+from mypy.nodes import AssignmentStmt, ClassDef, SymbolTableNode
+from mypy.plugin import AttributeContext, ClassDefContext, Plugin, SemanticAnalyzerPluginInterface, TypeInfo
+from mypy.types import AnyType, Type, TypeOfAny
 
 
 class GaffePlugin(Plugin):
     def get_class_attribute_hook(self, fullname: str):
         if fullname.startswith("builtins.") or fullname.startswith("typing."):
             return
-        class_name = fullname[:fullname.rfind(".")]
+        class_name = fullname[: fullname.rfind(".")]
         sym = self.lookup_fully_qualified(class_name)
         if isinstance(sym, SymbolTableNode) and isinstance(sym.node, TypeInfo):
             for mro in sym.node.mro:
@@ -25,7 +25,7 @@ class GaffePlugin(Plugin):
         if fullname.startswith("builtins.") or fullname.startswith("typing."):
             return
 
-        class_name = fullname[:fullname.rfind(".")]
+        class_name = fullname[: fullname.rfind(".")]
         sym = self.lookup_fully_qualified(class_name)
         if isinstance(sym, SymbolTableNode) and isinstance(sym.node, TypeInfo):
             for mro in sym.node.mro:
